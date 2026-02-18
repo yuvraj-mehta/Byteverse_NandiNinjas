@@ -11,18 +11,33 @@ import { generateForgotPasswordEmailTemplate } from "../utils/emailTemplates.js"
 export const register = catchAsyncErrors(async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
+    const normalizedEmail = email?.toLowerCase?.();
+    console.log(`[REGISTER] Request received for email: ${normalizedEmail || "N/A"}`);
+
     if (!name || !email || !password) {
+      console.log(`[REGISTER] Validation failed: missing required fields for ${normalizedEmail || "N/A"}`);
       return next(new ErrorHandler("Please enter all fields.", 400));
     }
+
+    console.log(`[REGISTER] Required fields validated for ${normalizedEmail}`);
     const isRegistered = await User.findOne({ email, accountVerified: true });
     if (isRegistered) {
+      console.log(`[REGISTER] Blocked: verified user already exists for ${normalizedEmail}`);
       return next(new ErrorHandler("User already exists", 400));
     }
+
+    console.log(`[REGISTER] No verified account found for ${normalizedEmail}`);
     const registerationAttemptsByUser = await User.find({
       email,
       accountVerified: false,
     });
+
+    console.log(
+      `[REGISTER] Unverified registration attempts for ${normalizedEmail}: ${registerationAttemptsByUser.length}`
+    );
+
     if (registerationAttemptsByUser.length >= 5) {
+      console.log(`[REGISTER] Blocked: too many registration attempts for ${normalizedEmail}`);
       return next(
         new ErrorHandler(
           "You have exceeded the number of registration attempts. Please contact support.",
@@ -30,21 +45,40 @@ export const register = catchAsyncErrors(async (req, res, next) => {
         )
       );
     }
+
     if (password.length < 8 || password.length > 16) {
+      console.log(`[REGISTER] Validation failed: invalid password length for ${normalizedEmail}`);
       return next(
         new ErrorHandler("Password must be between 8 and 16 characters.", 400)
       );
     }
+
+    console.log(`[REGISTER] Password policy validated for ${normalizedEmail}`);
     const hashedPassword = await bcrypt.hash(password, 10);
+    console.log(`[REGISTER] Password hashed for ${normalizedEmail}`);
+
     const user = await User.create({
       name,
       email,
       password: hashedPassword,
     });
+
+    console.log(`[REGISTER] User document created with id: ${user._id}`);
     const verificationCode = await user.generateVerificationCode();
+    console.log(`[REGISTER] Verification code generated for user id: ${user._id}`);
+
     await user.save();
-    sendVerificationCode(verificationCode, email, res);
+    console.log(`[REGISTER] User saved with verification code for ${normalizedEmail}`);
+
+    await sendVerificationCode(verificationCode, email);
+    console.log(`[REGISTER] Verification email sent successfully to ${normalizedEmail}`);
+
+    res.status(200).json({
+      success: true,
+      message: "Verification code sent successfully.",
+    });
   } catch (error) {
+    console.error(`[REGISTER] Registration failed for ${req.body?.email || "N/A"}: ${error.message}`);
     next(error);
   }
 });

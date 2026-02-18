@@ -147,7 +147,7 @@ export const resetAuthSlice = () => (dispatch) => {
 export const register = (data) => async (dispatch) => {
   dispatch(authSlice.actions.registerRequest());
   await axios
-    .post("https://byteverse-nandininjas.onrender.com/api/v1/auth/register", data, {
+    .post("http://localhost:3500/api/v1/auth/register", data, {
       withCredentials: true,
       headers: {
         "Content-Type": "application/json",
@@ -165,7 +165,7 @@ export const otpVerification = (email, otp) => async (dispatch) => {
   dispatch(authSlice.actions.otpVerificationRequest());
   await axios
     .post(
-      "https://byteverse-nandininjas.onrender.com/api/v1/auth/verify-otp",
+      "http://localhost:3500/api/v1/auth/verify-otp",
       { email, otp },
       {
         withCredentials: true,
@@ -187,7 +187,7 @@ export const otpVerification = (email, otp) => async (dispatch) => {
 export const login = (data) => async (dispatch) => {
   dispatch(authSlice.actions.loginRequest());
   await axios
-    .post("https://byteverse-nandininjas.onrender.com/api/v1/auth/login", data, {
+    .post("http://localhost:3500/api/v1/auth/login", data, {
       withCredentials: true,
       headers: {
         "Content-Type": "application/json",
@@ -204,7 +204,7 @@ export const login = (data) => async (dispatch) => {
 export const logout = () => async (dispatch) => {
   dispatch(authSlice.actions.logoutRequest());
   await axios
-    .get("https://byteverse-nandininjas.onrender.com/api/v1/auth/logout", {
+    .get("http://localhost:3500/api/v1/auth/logout", {
       withCredentials: true,
     })
     .then((res) => {
@@ -219,7 +219,7 @@ export const logout = () => async (dispatch) => {
 export const getUser = () => async (dispatch) => {
   dispatch(authSlice.actions.getUserRequest());
   await axios
-    .get("https://byteverse-nandininjas.onrender.com/api/v1/auth/me", {
+    .get("http://localhost:3500/api/v1/auth/me", {
       withCredentials: true,
     })
     .then((res) => {
@@ -234,7 +234,7 @@ export const forgotPassword = (email) => async (dispatch) => {
   dispatch(authSlice.actions.forgotPasswordRequest());
   await axios
     .post(
-      "https://byteverse-nandininjas.onrender.com/api/v1/auth/password/forgot",
+      "http://localhost:3500/api/v1/auth/password/forgot",
       { email },
       {
         withCredentials: true,
@@ -256,7 +256,7 @@ export const forgotPassword = (email) => async (dispatch) => {
 export const resetPassword = (data, token) => async (dispatch) => {
   dispatch(authSlice.actions.resetPasswordRequest());
   await axios
-    .put(`https://byteverse-nandininjas.onrender.com/api/v1/auth/password/reset/${token}`, data, {
+    .put(`http://localhost:3500/api/v1/auth/password/reset/${token}`, data, {
       withCredentials: true,
       headers: {
         "Content-Type": "application/json",
@@ -275,7 +275,7 @@ export const resetPassword = (data, token) => async (dispatch) => {
 export const updatePassword = (data) => async (dispatch) => {
   dispatch(authSlice.actions.updatePasswordRequest());
   await axios
-    .put(`https://byteverse-nandininjas.onrender.com/api/v1/auth/password/update`, data, {
+    .put(`http://localhost:3500/api/v1/auth/password/update`, data, {
       withCredentials: true,
       headers: {
         "Content-Type": "application/json",

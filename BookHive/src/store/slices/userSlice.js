@@ -35,7 +35,7 @@ const userSlice = createSlice({
 export const fetchAllUsers = () => async (dispatch) => {
   dispatch(userSlice.actions.fetchAllUsersRequest());
   await axios
-    .get("https://byteverse-nandininjas.onrender.com/api/v1/user/all", { withCredentials: true })
+    .get("http://localhost:3500/api/v1/user/all", { withCredentials: true })
     .then((res) => {
       dispatch(userSlice.actions.fetchAllUsersSuccess(res.data.users));
     })
@@ -49,7 +49,7 @@ export const fetchAllUsers = () => async (dispatch) => {
 export const addNewAdmin = (data) => async (dispatch) => {
   dispatch(userSlice.actions.addNewAdminRequest());
   await axios
-    .post("https://byteverse-nandininjas.onrender.com/api/v1/user/add/new-admin", data, {
+    .post("http://localhost:3500/api/v1/user/add/new-admin", data, {
       withCredentials: true,
       headers: {
         "Content-Type": "multipart/form-data",

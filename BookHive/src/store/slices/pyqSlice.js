@@ -22,7 +22,7 @@ const pyqSlice = createSlice({
 export const fetchAllPYQs = () => async (dispatch) => {
   dispatch(pyqSlice.actions.fetchPYQsRequest());
   try {
-    const { data } = await axios.get("https://byteverse-nandininjas.onrender.comapi/v1/pyq/all", { withCredentials: true });
+    const { data } = await axios.get("http://localhost:3500api/v1/pyq/all", { withCredentials: true });
     dispatch(pyqSlice.actions.fetchPYQsSuccess(data.pyqs));
   } catch (error) {
     dispatch(pyqSlice.actions.fetchPYQsFailed(error.response.data.message));
@@ -32,7 +32,7 @@ export const fetchAllPYQs = () => async (dispatch) => {
 // export const addPYQ = (pyqData) => async (dispatch) => {
 //   dispatch(pyqSlice.actions.addPYQRequest());
 //   try {
-//     await axios.post("https://byteverse-nandininjas.onrender.comapi/v1/pyq/admin/add", pyqData, { withCredentials: true });
+//     await axios.post("http://localhost:3500api/v1/pyq/admin/add", pyqData, { withCredentials: true });
 //     dispatch(pyqSlice.actions.addPYQSuccess());
 //   } catch (error) {
 //     dispatch(pyqSlice.actions.addPYQFailed(error.response.data.message));
@@ -44,7 +44,7 @@ export const addPYQ = (pyqData) => async (dispatch) => {
   dispatch(pyqSlice.actions.addPYQRequest());
   try {
     const { data } = await axios.post(
-      "https://byteverse-nandininjas.onrender.com/api/v1/pyq/admin/add",
+      "http://localhost:3500/api/v1/pyq/admin/add",
       pyqData,
       { withCredentials: true }
     );
