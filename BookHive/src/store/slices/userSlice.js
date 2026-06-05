@@ -3,6 +3,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { toggleAddNewAdminPopup } from "./popUpSlice";
 import { API_ENDPOINTS } from "../../config/apiConfig.js";
+import { getApiErrorMessage } from "../../utils/getApiErrorMessage.js";
 
 const userSlice = createSlice({
   name: "user",
@@ -41,9 +42,7 @@ export const fetchAllUsers = () => async (dispatch) => {
       dispatch(userSlice.actions.fetchAllUsersSuccess(res.data.users));
     })
     .catch((err) => {
-      dispatch(
-        userSlice.actions.fetchAllUsersFailed(err.response.data.message)
-      );
+      dispatch(userSlice.actions.fetchAllUsersFailed(getApiErrorMessage(err)));
     });
 };
 
@@ -62,8 +61,8 @@ export const addNewAdmin = (data) => async (dispatch) => {
       dispatch(toggleAddNewAdminPopup());
     })
     .catch((err) => {
-      userSlice.actions.addNewAdminFailed();
-      toast.error(err.response.data.message);
+      dispatch(userSlice.actions.addNewAdminFailed());
+      toast.error(getApiErrorMessage(err));
     });
 };
 

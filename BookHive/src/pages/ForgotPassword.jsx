@@ -11,7 +11,7 @@ const ForgotPassword = () => {
 
   const dispatch = useDispatch();
 
-  const { loading, error, message, user, isAuthenticated } = useSelector(
+  const { loading, error, message, isAuthenticated } = useSelector(
     (state) => state.auth
   );
 
@@ -29,7 +29,7 @@ const ForgotPassword = () => {
       toast.error(error);
       dispatch(resetAuthSlice());
     }
-  }, [dispatch, isAuthenticated, error, loading]);
+  }, [dispatch, error, message]);
 
   if (isAuthenticated) {
     return <Navigate to={"/"} />;

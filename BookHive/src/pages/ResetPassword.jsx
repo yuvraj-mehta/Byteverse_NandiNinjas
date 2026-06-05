@@ -14,16 +14,13 @@ const ResetPassword = () => {
 
   const dispatch = useDispatch();
 
-  const { loading, error, message, user, isAuthenticated } = useSelector(
+  const { loading, error, message, isAuthenticated } = useSelector(
     (state) => state.auth
   );
 
   const handleResetPassword = (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("password", password);
-    formData.append("confirmPassword", confirmPassword);
-    dispatch(resetPassword(formData, token));
+    dispatch(resetPassword({ password, confirmPassword }, token));
   };
 
   useEffect(() => {
@@ -35,7 +32,7 @@ const ResetPassword = () => {
       toast.error(error);
       dispatch(resetAuthSlice());
     }
-  }, [dispatch, isAuthenticated, error, loading]);
+  }, [dispatch, error, message]);
 
   if (isAuthenticated) {
     return <Navigate to={"/"} />;

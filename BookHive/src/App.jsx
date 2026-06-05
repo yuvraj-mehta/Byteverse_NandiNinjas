@@ -19,17 +19,25 @@ import {
 const App = () => {
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(getUser());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      return;
+    }
+
     dispatch(fetchAllBooks());
-    if (isAuthenticated && user?.role === "User") {
+    if (user?.role === "User") {
       dispatch(fetchUserBorrowedBooks());
     }
-    if (isAuthenticated && user?.role === "Admin") {
+    if (user?.role === "Admin") {
       dispatch(fetchAllUsers());
       dispatch(fetchAllBorrowedBooks());
     }
-  }, [isAuthenticated]);
+  }, [dispatch, isAuthenticated, user?.role]);
 
   return (
     <Router>

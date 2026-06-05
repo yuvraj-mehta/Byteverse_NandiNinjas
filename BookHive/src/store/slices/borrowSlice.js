@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toggleRecordBookPopup } from "./popUpSlice";
 import { API_ENDPOINTS } from "../../config/apiConfig.js";
+import { getApiErrorMessage } from "../../utils/getApiErrorMessage.js";
 
 const borrowSlice = createSlice({
   name: "borrow",
@@ -95,7 +96,7 @@ export const fetchUserBorrowedBooks = () => async (dispatch) => {
     .catch((err) => {
       dispatch(
         borrowSlice.actions.fetchUserBorrowedBooksFailed(
-          err.response.data.message
+          getApiErrorMessage(err)
         )
       );
     });
@@ -115,7 +116,7 @@ export const fetchAllBorrowedBooks = () => async (dispatch) => {
     .catch((err) => {
       dispatch(
         borrowSlice.actions.fetchAllBorrowedBooksFailed(
-          err.response.data.message
+          getApiErrorMessage(err)
         )
       );
     });
@@ -139,7 +140,7 @@ export const recordBorrowBook = (email, id) => async (dispatch) => {
       dispatch(toggleRecordBookPopup());
     })
     .catch((err) => {
-      dispatch(borrowSlice.actions.recordBookFailed(err.response.data.message));
+      dispatch(borrowSlice.actions.recordBookFailed(getApiErrorMessage(err)));
     });
 };
 
@@ -160,7 +161,7 @@ export const returnBook = (email, id) => async (dispatch) => {
       dispatch(borrowSlice.actions.returnBookSuccess(res.data.message));
     })
     .catch((err) => {
-      dispatch(borrowSlice.actions.returnBookFailed(err.response.data.message));
+      dispatch(borrowSlice.actions.returnBookFailed(getApiErrorMessage(err)));
     });
 };
 

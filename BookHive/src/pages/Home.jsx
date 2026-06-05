@@ -45,10 +45,8 @@ const Home = () => {
               ) : (
                 <AdminDashboard />
               );
-              break;
             case "Books":
               return <BookManagement />;
-              break;
             case "Catalog":
               if (user.role === "Admin") {
                 return <Catalog />;
@@ -61,8 +59,7 @@ const Home = () => {
               break;
             case "My Borrowed Books":
               return <MyBorrowedBooks />;
-              break;
-            
+
             //
             case "ManagePYQs":
               if (user.role === "Admin") {
@@ -73,8 +70,7 @@ const Home = () => {
               if (user.role === "User") {
                 return <MyPYQs />;
               }
-              break
-
+              break;
 
             default:
               return user?.role === "User" ? (
@@ -82,7 +78,6 @@ const Home = () => {
               ) : (
                 <AdminDashboard />
               );
-              break;
           }
         })()}
       </div>

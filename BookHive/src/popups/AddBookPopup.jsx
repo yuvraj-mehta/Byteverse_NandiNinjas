@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addBook, fetchAllBooks } from "../store/slices/bookSlice";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addBook } from "../store/slices/bookSlice";
 import { toggleAddBookPopup } from "../store/slices/popUpSlice";
-import { toast } from "react-toastify";
 
 const AddBookPopup = () => {
   const dispatch = useDispatch();

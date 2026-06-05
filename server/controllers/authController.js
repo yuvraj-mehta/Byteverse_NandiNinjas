@@ -4,7 +4,7 @@ import { User } from "../models/userModel.js";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import { sendVerificationCode } from "../utils/sendVerificationCode.js";
-import { sendToken } from "../utils/sendToken.js";
+import { getTokenCookieOptions, sendToken } from "../utils/sendToken.js";
 import { sendEmail } from "../utils/sendEmail.js";
 import { generateForgotPasswordEmailTemplate } from "../utils/emailTemplates.js";
 
@@ -121,12 +121,7 @@ export const login = catchAsyncErrors(async (req, res, next) => {
 export const logout = catchAsyncErrors(async (req, res, next) => {
   res
     .status(200)
-    .cookie("token", "", {
-      expires: new Date(Date.now()),
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Ensure secure cookies in production
-      sameSite: "None", // Required for cross-origin cookies
-    })
+    .cookie("token", "", getTokenCookieOptions(new Date(Date.now())))
     .json({
       success: true,
       message: "Logged out successfully.",

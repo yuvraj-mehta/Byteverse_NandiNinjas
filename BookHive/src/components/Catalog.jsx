@@ -75,7 +75,7 @@ const Catalog = () => {
       toast.error(error);
       dispatch(resetBorrowSlice());
     }
-  }, [dispatch, error, loading]);
+  }, [dispatch, error, loading, message]);
 
   return (
     <>

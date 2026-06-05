@@ -15,7 +15,7 @@ import {
   PointElement,
   ArcElement,
 } from "chart.js";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import logo from "../assets/black-logo.png";
 import Header from "../layout/Header";
 
@@ -36,13 +36,12 @@ const AdminDashboard = () => {
   const { users } = useSelector((state) => state.user);
   const { books } = useSelector((state) => state.book);
   const { allBorrowedBooks } = useSelector((state) => state.borrow);
-  const { settingPopup } = useSelector((state) => state.popup);
 
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalAdmin, setTotalAdmin] = useState(0);
-  const [totalBooks, setTotalBooks] = useState((books && books.length) || 0);
   const [totalBorrowedBooks, setTotalBorrowedBooks] = useState(0);
   const [totalReturnedBooks, setTotalReturnedBooks] = useState(0);
+  const totalBooks = (books && books.length) || 0;
 
   useEffect(() => {
     let numberOfUsers = users.filter((user) => user.role === "User");

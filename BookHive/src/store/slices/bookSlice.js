@@ -3,6 +3,7 @@ import axios from "axios";
 import { toggleAddBookPopup } from "./popUpSlice";
 import { toast } from "react-toastify";
 import { API_ENDPOINTS } from "../../config/apiConfig.js";
+import { getApiErrorMessage } from "../../utils/getApiErrorMessage.js";
 
 const bookSlice = createSlice({
   name: "book",
@@ -58,7 +59,7 @@ export const fetchAllBooks = () => async (dispatch) => {
       dispatch(bookSlice.actions.fetchBooksSuccess(res.data.books));
     })
     .catch((err) => {
-      dispatch(bookSlice.actions.fetchBooksFailed(err.response.data.message));
+      dispatch(bookSlice.actions.fetchBooksFailed(getApiErrorMessage(err)));
     });
 };
 
@@ -78,7 +79,7 @@ export const addBook = (data) => async (dispatch) => {
       dispatch(fetchAllBooks());
     })
     .catch((err) => {
-      dispatch(bookSlice.actions.addBookFailed(err.response.data.message));
+      dispatch(bookSlice.actions.addBookFailed(getApiErrorMessage(err)));
     });
 };
 

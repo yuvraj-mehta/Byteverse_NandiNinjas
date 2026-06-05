@@ -11,9 +11,7 @@ const OTP = () => {
   const [otp, setOtp] = useState("");
   const dispatch = useDispatch();
 
-  const { loading, error, message, user, isAuthenticated } = useSelector(
-    (state) => state.auth
-  );
+  const { error, isAuthenticated } = useSelector((state) => state.auth);
 
   const handleOtpVerification = (e) => {
     e.preventDefault();
@@ -28,7 +26,7 @@ const OTP = () => {
       toast.error(error);
       dispatch(resetAuthSlice());
     }
-  }, [dispatch, isAuthenticated, error, loading]);
+  }, [dispatch, error]);
 
   if (isAuthenticated) {
     return <Navigate to={"/"} />;

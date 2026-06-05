@@ -13,7 +13,7 @@ const Register = () => {
 
   const dispatch = useDispatch();
 
-  const { loading, error, message, user, isAuthenticated } = useSelector(
+  const { error, message, isAuthenticated } = useSelector(
     (state) => state.auth
   );
 
@@ -21,11 +21,7 @@ const Register = () => {
 
   const handleRegister = (e) => {
     e.preventDefault();
-    const data = new FormData();
-    data.append("name", name);
-    data.append("email", email);
-    data.append("password", password);
-    dispatch(register(data));
+    dispatch(register({ name, email, password }));
   };
 
   useEffect(() => {
@@ -38,7 +34,7 @@ const Register = () => {
       toast.error(error);
       dispatch(resetAuthSlice());
     }
-  }, [dispatch, isAuthenticated, error, loading]);
+  }, [dispatch, email, error, message, navigateTo]);
 
   if (isAuthenticated) {
     return <Navigate to={"/"} />;

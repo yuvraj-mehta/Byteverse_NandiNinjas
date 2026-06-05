@@ -3,7 +3,9 @@
  * Uses environment variables for the server URL
  */
 
-const API_BASE_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:5000';
+const API_BASE_URL = (
+  import.meta.env.VITE_SERVER_URL || "http://localhost:3000"
+).replace(/\/+$/, "");
 
 export const API_ENDPOINTS = {
   // Auth endpoints

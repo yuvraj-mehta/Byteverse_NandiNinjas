@@ -11,16 +11,11 @@ const Login = () => {
 
   const dispatch = useDispatch();
 
-  const { loading, error, message, user, isAuthenticated } = useSelector(
-    (state) => state.auth
-  );
+  const { error, isAuthenticated } = useSelector((state) => state.auth);
 
   const handleLogin = (e) => {
     e.preventDefault();
-    const data = new FormData();
-    data.append("email", email);
-    data.append("password", password);
-    dispatch(login(data));
+    dispatch(login({ email, password }));
   };
 
   useEffect(() => {
@@ -32,7 +27,7 @@ const Login = () => {
       toast.error(error);
       dispatch(resetAuthSlice());
     }
-  }, [dispatch, isAuthenticated, error, loading]);
+  }, [dispatch, error]);
 
   if (isAuthenticated) {
     return <Navigate to={"/"} />;

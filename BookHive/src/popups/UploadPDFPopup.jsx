@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { uploadPDF } from "../store/slices/pdfSlice";
-import { toggleUploadPDFPopup } from "../store/slices/popUpSlice";
 
 const UploadPDFPopup = () => {
   const dispatch = useDispatch();

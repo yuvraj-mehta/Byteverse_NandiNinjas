@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import logo_with_title from "../assets/logo-with-title-black.png";
 import returnIcon from "../assets/redo.png";
 import browseIcon from "../assets/pointing.png";
 import bookIcon from "../assets/book-square.png";
 import { Pie } from "react-chartjs-2";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Header from "../layout/Header";
 import {
   Chart as ChartJS,
@@ -34,7 +33,6 @@ ChartJS.register(
 );
 
 const UserDashboard = () => {
-  const { settingPopup } = useSelector((state) => state.popup);
   const { userBorrowedBooks } = useSelector((state) => state.borrow);
 
   const [totalBorrowedBooks, setTotalBorrowedBooks] = useState(0);

@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_ENDPOINTS } from "../../config/apiConfig.js";
+import { getApiErrorMessage } from "../../utils/getApiErrorMessage.js";
 
 const authSlice = createSlice({
   name: "auth",
@@ -135,8 +136,6 @@ const authSlice = createSlice({
       state.error = null;
       state.loading = false;
       state.message = null;
-      state.user = state.user;
-      state.isAuthenticated = state.isAuthenticated;
     },
   },
 });
@@ -158,7 +157,7 @@ export const register = (data) => async (dispatch) => {
       dispatch(authSlice.actions.registerSuccess(res.data));
     })
     .catch((error) => {
-      dispatch(authSlice.actions.registerFailed(error.response.data.message));
+      dispatch(authSlice.actions.registerFailed(getApiErrorMessage(error)));
     });
 };
 
@@ -180,7 +179,7 @@ export const otpVerification = (email, otp) => async (dispatch) => {
     })
     .catch((error) => {
       dispatch(
-        authSlice.actions.otpVerificationFailed(error.response.data.message)
+        authSlice.actions.otpVerificationFailed(getApiErrorMessage(error))
       );
     });
 };
@@ -198,7 +197,7 @@ export const login = (data) => async (dispatch) => {
       dispatch(authSlice.actions.loginSuccess(res.data));
     })
     .catch((error) => {
-      dispatch(authSlice.actions.loginFailed(error.response.data.message));
+      dispatch(authSlice.actions.loginFailed(getApiErrorMessage(error)));
     });
 };
 
@@ -213,7 +212,7 @@ export const logout = () => async (dispatch) => {
       dispatch(authSlice.actions.resetAuthSlice());
     })
     .catch((error) => {
-      dispatch(authSlice.actions.logoutFailed(error.response.data.message));
+      dispatch(authSlice.actions.logoutFailed(getApiErrorMessage(error)));
     });
 };
 
@@ -227,7 +226,7 @@ export const getUser = () => async (dispatch) => {
       dispatch(authSlice.actions.getUserSuccess(res.data));
     })
     .catch((error) => {
-      dispatch(authSlice.actions.getUserFailed(error.response.data.message));
+      dispatch(authSlice.actions.getUserFailed(getApiErrorMessage(error)));
     });
 };
 
@@ -249,7 +248,7 @@ export const forgotPassword = (email) => async (dispatch) => {
     })
     .catch((error) => {
       dispatch(
-        authSlice.actions.forgotPasswordFailed(error.response.data.message)
+        authSlice.actions.forgotPasswordFailed(getApiErrorMessage(error))
       );
     });
 };
@@ -268,7 +267,7 @@ export const resetPassword = (data, token) => async (dispatch) => {
     })
     .catch((error) => {
       dispatch(
-        authSlice.actions.resetPasswordFailed(error.response.data.message)
+        authSlice.actions.resetPasswordFailed(getApiErrorMessage(error))
       );
     });
 };
@@ -287,7 +286,7 @@ export const updatePassword = (data) => async (dispatch) => {
     })
     .catch((error) => {
       dispatch(
-        authSlice.actions.updatePasswordFailed(error.response.data.message)
+        authSlice.actions.updatePasswordFailed(getApiErrorMessage(error))
       );
     });
 };
