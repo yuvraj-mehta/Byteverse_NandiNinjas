@@ -3,9 +3,21 @@
  * Uses environment variables for the server URL
  */
 
-const API_BASE_URL = (
-  import.meta.env.VITE_SERVER_URL || "http://localhost:3000"
-).replace(/\/+$/, "");
+const LOCAL_API_BASE_URL = "http://localhost:3000";
+const PRODUCTION_API_BASE_URL =
+  "https://byteverse-nandininjas-q7lg.onrender.com";
+
+const isLoopbackUrl = (url = "") =>
+  /^https?:\/\/(localhost|127\.0\.0\.1|\[::1\])(?::|\/|$)/i.test(url);
+
+const configuredApiBaseUrl = import.meta.env.VITE_SERVER_URL;
+const apiBaseUrl =
+  import.meta.env.PROD &&
+  (!configuredApiBaseUrl || isLoopbackUrl(configuredApiBaseUrl))
+    ? PRODUCTION_API_BASE_URL
+    : configuredApiBaseUrl || LOCAL_API_BASE_URL;
+
+const API_BASE_URL = apiBaseUrl.replace(/\/+$/, "");
 
 export const API_ENDPOINTS = {
   // Auth endpoints
