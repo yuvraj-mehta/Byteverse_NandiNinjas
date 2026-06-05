@@ -1,7 +1,8 @@
 export const getTokenCookieOptions = (
   expires = new Date(
     Date.now() + Number(process.env.COOKIE_EXPIRE || 7) * 24 * 60 * 60 * 1000
-  )
+  ),
+  requestOrigin = ""
 ) => {
   const configuredFrontendUrls = [
     process.env.FRONTEND_URL,
@@ -11,6 +12,7 @@ export const getTokenCookieOptions = (
     .join(",");
   const useCrossSiteCookie =
     process.env.NODE_ENV === "production" ||
+    requestOrigin.startsWith("https://") ||
     configuredFrontendUrls.includes("https://");
 
   return {
@@ -21,7 +23,7 @@ export const getTokenCookieOptions = (
   };
 };
 
-export const sendToken = (user, statusCode, message, res) => {
+export const sendToken = (user, statusCode, message, res, req) => {
   const token = user.generateToken();
   const safeUser = user.toObject ? user.toObject() : { ...user };
 
@@ -31,9 +33,12 @@ export const sendToken = (user, statusCode, message, res) => {
   delete safeUser.resetPasswordToken;
   delete safeUser.resetPasswordExpire;
 
-  res.status(statusCode).cookie("token", token, getTokenCookieOptions()).json({
-    success: true,
-    message,
-    user: safeUser,
-  });
+  res
+    .status(statusCode)
+    .cookie("token", token, getTokenCookieOptions(undefined, req?.get("origin")))
+    .json({
+      success: true,
+      message,
+      user: safeUser,
+    });
 };

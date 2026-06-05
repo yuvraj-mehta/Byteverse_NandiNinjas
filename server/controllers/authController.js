@@ -3,6 +3,7 @@ import ErrorHandler from "../middlewares/errorMiddlewares.js";
 import { User } from "../models/userModel.js";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
+import jwt from "jsonwebtoken";
 import { sendVerificationCode } from "../utils/sendVerificationCode.js";
 import { getTokenCookieOptions, sendToken } from "../utils/sendToken.js";
 import { sendEmail } from "../utils/sendEmail.js";
@@ -94,7 +95,7 @@ export const verifyOTP = catchAsyncErrors(async (req, res, next) => {
     user.verficationCodeExpire = null;
     await user.save({ validateModifiedOnly: true });
 
-    sendToken(user, 200, "Account Verified.", res);
+    sendToken(user, 200, "Account Verified.", res, req);
   } catch (error) {
     return next(new ErrorHandler("Internal server error.", 500));
   }
@@ -115,13 +116,17 @@ export const login = catchAsyncErrors(async (req, res, next) => {
   if (!isPasswordMatched) {
     return next(new ErrorHandler("Invalid email or password.", 400));
   }
-  sendToken(user, 200, "User login successfully.", res);
+  sendToken(user, 200, "User login successfully.", res, req);
 });
 
 export const logout = catchAsyncErrors(async (req, res, next) => {
   res
     .status(200)
-    .cookie("token", "", getTokenCookieOptions(new Date(Date.now())))
+    .cookie(
+      "token",
+      "",
+      getTokenCookieOptions(new Date(Date.now()), req.get("origin"))
+    )
     .json({
       success: true,
       message: "Logged out successfully.",
@@ -129,11 +134,39 @@ export const logout = catchAsyncErrors(async (req, res, next) => {
 });
 
 export const getUser = catchAsyncErrors(async (req, res, next) => {
-  const user = req.user;
-  res.status(200).json({
-    success: true,
-    user,
-  });
+  const { token } = req.cookies;
+
+  if (!token) {
+    return res.status(200).json({
+      success: true,
+      isAuthenticated: false,
+      user: null,
+    });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    const user = await User.findById(decoded.id);
+
+    return res.status(200).json({
+      success: true,
+      isAuthenticated: Boolean(user),
+      user,
+    });
+  } catch (error) {
+    return res
+      .status(200)
+      .cookie(
+        "token",
+        "",
+        getTokenCookieOptions(new Date(Date.now()), req.get("origin"))
+      )
+      .json({
+        success: true,
+        isAuthenticated: false,
+        user: null,
+      });
+  }
 });
 
 export const forgotPassword = catchAsyncErrors(async (req, res, next) => {
@@ -214,7 +247,7 @@ export const resetPassword = catchAsyncErrors(async (req, res, next) => {
 
   await user.save();
 
-  sendToken(user, 200, "Password reset successfully.", res);
+  sendToken(user, 200, "Password reset successfully.", res, req);
 });
 
 export const updatePassword = catchAsyncErrors(async (req, res, next) => {
