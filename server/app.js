@@ -9,6 +9,7 @@ import bookRouter from "./routes/bookRouter.js";
 import borrowRouter from "./routes/borrowRouter.js";
 import pyqRouter from "./routes/pyqRouter.js";
 import userRouter from "./routes/userRouter.js";
+import healthRouter from "./routes/healthRouter.js";
 import expressFileupload from "express-fileupload";
 import { notifyUsers } from "./services/notifyUsers.js";
 import { removeUnverifiedAccounts } from "./services/removeUnverifiedAccounts.js";
@@ -37,6 +38,7 @@ app.use(
   })
 );
 
+app.use("/api/v1/health", healthRouter);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/book", bookRouter);
 app.use("/api/v1/borrow", borrowRouter);
