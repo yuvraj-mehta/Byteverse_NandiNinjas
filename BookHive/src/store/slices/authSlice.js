@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { API_ENDPOINTS } from "../../config/apiConfig.js";
 
 const authSlice = createSlice({
   name: "auth",
@@ -147,7 +148,7 @@ export const resetAuthSlice = () => (dispatch) => {
 export const register = (data) => async (dispatch) => {
   dispatch(authSlice.actions.registerRequest());
   await axios
-    .post("https://byteverse-nandininjas.onrender.com/api/v1/auth/register", data, {
+    .post(API_ENDPOINTS.AUTH.REGISTER, data, {
       withCredentials: true,
       headers: {
         "Content-Type": "application/json",
@@ -165,7 +166,7 @@ export const otpVerification = (email, otp) => async (dispatch) => {
   dispatch(authSlice.actions.otpVerificationRequest());
   await axios
     .post(
-      "https://byteverse-nandininjas.onrender.com/api/v1/auth/verify-otp",
+      API_ENDPOINTS.AUTH.VERIFY_OTP,
       { email, otp },
       {
         withCredentials: true,
@@ -187,7 +188,7 @@ export const otpVerification = (email, otp) => async (dispatch) => {
 export const login = (data) => async (dispatch) => {
   dispatch(authSlice.actions.loginRequest());
   await axios
-    .post("https://byteverse-nandininjas.onrender.com/api/v1/auth/login", data, {
+    .post(API_ENDPOINTS.AUTH.LOGIN, data, {
       withCredentials: true,
       headers: {
         "Content-Type": "application/json",
@@ -204,7 +205,7 @@ export const login = (data) => async (dispatch) => {
 export const logout = () => async (dispatch) => {
   dispatch(authSlice.actions.logoutRequest());
   await axios
-    .get("https://byteverse-nandininjas.onrender.com/api/v1/auth/logout", {
+    .get(API_ENDPOINTS.AUTH.LOGOUT, {
       withCredentials: true,
     })
     .then((res) => {
@@ -219,7 +220,7 @@ export const logout = () => async (dispatch) => {
 export const getUser = () => async (dispatch) => {
   dispatch(authSlice.actions.getUserRequest());
   await axios
-    .get("https://byteverse-nandininjas.onrender.com/api/v1/auth/me", {
+    .get(API_ENDPOINTS.AUTH.GET_ME, {
       withCredentials: true,
     })
     .then((res) => {
@@ -234,7 +235,7 @@ export const forgotPassword = (email) => async (dispatch) => {
   dispatch(authSlice.actions.forgotPasswordRequest());
   await axios
     .post(
-      "https://byteverse-nandininjas.onrender.com/api/v1/auth/password/forgot",
+      API_ENDPOINTS.AUTH.FORGOT_PASSWORD,
       { email },
       {
         withCredentials: true,
@@ -256,7 +257,7 @@ export const forgotPassword = (email) => async (dispatch) => {
 export const resetPassword = (data, token) => async (dispatch) => {
   dispatch(authSlice.actions.resetPasswordRequest());
   await axios
-    .put(`https://byteverse-nandininjas.onrender.com/api/v1/auth/password/reset/${token}`, data, {
+    .put(API_ENDPOINTS.AUTH.RESET_PASSWORD(token), data, {
       withCredentials: true,
       headers: {
         "Content-Type": "application/json",
@@ -275,7 +276,7 @@ export const resetPassword = (data, token) => async (dispatch) => {
 export const updatePassword = (data) => async (dispatch) => {
   dispatch(authSlice.actions.updatePasswordRequest());
   await axios
-    .put(`https://byteverse-nandininjas.onrender.com/api/v1/auth/password/update`, data, {
+    .put(API_ENDPOINTS.AUTH.UPDATE_PASSWORD, data, {
       withCredentials: true,
       headers: {
         "Content-Type": "application/json",

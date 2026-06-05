@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toggleAddBookPopup } from "./popUpSlice";
 import { toast } from "react-toastify";
+import { API_ENDPOINTS } from "../../config/apiConfig.js";
 
 const bookSlice = createSlice({
   name: "book",
@@ -50,7 +51,7 @@ const bookSlice = createSlice({
 export const fetchAllBooks = () => async (dispatch) => {
   dispatch(bookSlice.actions.fetchBooksRequest());
   await axios
-    .get("https://byteverse-nandininjas.onrender.com/api/v1/book/all", {
+    .get(API_ENDPOINTS.BOOK.GET_ALL, {
       withCredentials: true,
     })
     .then((res) => {
@@ -64,7 +65,7 @@ export const fetchAllBooks = () => async (dispatch) => {
 export const addBook = (data) => async (dispatch) => {
   dispatch(bookSlice.actions.addBookRequest());
   await axios
-    .post("https://byteverse-nandininjas.onrender.com/api/v1/book/admin/add", data, {
+    .post(API_ENDPOINTS.BOOK.ADD, data, {
       withCredentials: true,
       headers: {
         "Content-Type": "application/json",

@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toggleRecordBookPopup } from "./popUpSlice";
+import { API_ENDPOINTS } from "../../config/apiConfig.js";
 
 const borrowSlice = createSlice({
   name: "borrow",
@@ -81,7 +82,7 @@ const borrowSlice = createSlice({
 export const fetchUserBorrowedBooks = () => async (dispatch) => {
   dispatch(borrowSlice.actions.fetchUserBorrowedBooksRequest());
   await axios
-    .get("https://byteverse-nandininjas.onrender.com/api/v1/borrow/my-borrowed-books", {
+    .get(API_ENDPOINTS.BORROW.GET_MY_BORROWED, {
       withCredentials: true,
     })
     .then((res) => {
@@ -103,7 +104,7 @@ export const fetchUserBorrowedBooks = () => async (dispatch) => {
 export const fetchAllBorrowedBooks = () => async (dispatch) => {
   dispatch(borrowSlice.actions.fetchAllBorrowedBooksRequest());
   await axios
-    .get("https://byteverse-nandininjas.onrender.com/api/v1/borrow/borrowed-books-by-users", {
+    .get(API_ENDPOINTS.BORROW.GET_ALL_BORROWED, {
       withCredentials: true,
     })
     .then((res) => {
@@ -124,7 +125,7 @@ export const recordBorrowBook = (email, id) => async (dispatch) => {
   dispatch(borrowSlice.actions.recordBookRequest());
   await axios
     .post(
-      `https://byteverse-nandininjas.onrender.com/api/v1/borrow/record-borrow-book/${id}`,
+      API_ENDPOINTS.BORROW.RECORD_BORROW(id),
       { email },
       {
         withCredentials: true,
@@ -146,7 +147,7 @@ export const returnBook = (email, id) => async (dispatch) => {
   dispatch(borrowSlice.actions.returnBookRequest());
   await axios
     .put(
-      `https://byteverse-nandininjas.onrender.com/api/v1/borrow/return-borrowed-book/${id}`,
+      API_ENDPOINTS.BORROW.RETURN_BOOK(id),
       { email },
       {
         withCredentials: true,

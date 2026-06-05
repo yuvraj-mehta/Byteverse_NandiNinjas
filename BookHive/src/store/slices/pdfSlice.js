@@ -1,9 +1,10 @@
 
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { API_ENDPOINTS } from "../../config/apiConfig.js";
 
 export const uploadPDF = createAsyncThunk("pdf/upload", async (formData) => {
-  const response = await axios.post("/api/v1/pdf/upload", formData, {
+  const response = await axios.post(API_ENDPOINTS.PDF.UPLOAD, formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
   return response.data;

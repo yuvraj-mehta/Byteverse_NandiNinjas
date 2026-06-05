@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { API_ENDPOINTS } from "../../config/apiConfig.js";
 
 const pyqSlice = createSlice({
   name: "pyq",
@@ -22,7 +23,7 @@ const pyqSlice = createSlice({
 export const fetchAllPYQs = () => async (dispatch) => {
   dispatch(pyqSlice.actions.fetchPYQsRequest());
   try {
-    const { data } = await axios.get("https://byteverse-nandininjas.onrender.comapi/v1/pyq/all", { withCredentials: true });
+    const { data } = await axios.get(API_ENDPOINTS.PYQ.GET_ALL, { withCredentials: true });
     dispatch(pyqSlice.actions.fetchPYQsSuccess(data.pyqs));
   } catch (error) {
     dispatch(pyqSlice.actions.fetchPYQsFailed(error.response.data.message));
@@ -44,7 +45,7 @@ export const addPYQ = (pyqData) => async (dispatch) => {
   dispatch(pyqSlice.actions.addPYQRequest());
   try {
     const { data } = await axios.post(
-      "https://byteverse-nandininjas.onrender.com/api/v1/pyq/admin/add",
+      API_ENDPOINTS.PYQ.ADD,
       pyqData,
       { withCredentials: true }
     );
